@@ -17,6 +17,7 @@
   "dependencies": {
     "@beechatnetwork/elerium-lib": "file:../elerium-lib",
     "@expo/vector-icons": "^14.0.2",
+    "@mfellner/react-native-fast-create-hash": "^1.0.0-alpha.2",
     "@react-navigation/native": "^6.0.2",
     "add": "^2.0.6",
     "expo": "~51.0.28",
