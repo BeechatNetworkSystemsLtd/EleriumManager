@@ -15,6 +15,7 @@ const {height, width} = Dimensions.get('window');
 import {Buffer} from 'buffer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {urlSignProgram, urlSignReset} from '@beechatnetwork/elerium-lib';
+import DropdownPickerComponent from '../components/dropdownPicker';
 const logoImage = require('../assets/images/activeChipICon.png');
 
 const eyeIcon = require('../assets/images/eyeIcon.png');
@@ -28,12 +29,23 @@ const MintStreet = () => {
   const [pubKey, setPubKey] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [selectedUrl, setSelectedUrl] = useState('StreetMint');
+  const [urlItems, setUrlItems] = useState([
+    {label: 'StreetMint', value: 'StreetMint'},
+    {label: 'IRLS', value: 'IRLS'},
+  ]);
+
   const doProgram = async () => {
     if (password.length !== 8) {
       Alert.alert('Password should be exact 8 symbols');
       return;
     }
-    const pubKey = await urlSignProgram(password, 'streetmint.xyz/mint/' + url);
+    let updateUrl =
+      selectedUrl === 'StreetMint'
+        ? 'https://streetmint/' + url
+        : 'https://www.irls.xyz/irl/' + url;
+    // 'streetmint.xyz/mint/' + url
+    const pubKey = await urlSignProgram(password, updateUrl);
 
     console.log('public key ', pubKey);
     setPubKey(Buffer.from(pubKey).toString('hex'));
@@ -89,6 +101,17 @@ const MintStreet = () => {
                 value={pubKey}
                 placeholderTextColor={'gray'}
                 placeholder="Public Key"
+              />
+            </View>
+            <View style={styles.divider} />
+            <View style={styles.dropDownContainer}>
+              <DropdownPickerComponent
+                value={selectedUrl}
+                setValue={setSelectedUrl}
+                items={urlItems}
+                setItems={setUrlItems}
+                zIndexInverse={1000}
+                zIndex={3000}
               />
             </View>
 
@@ -150,7 +173,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     width: '90%',
-    borderColor: 'gray',
+    borderColor: '#cccccc',
     borderWidth: 1,
     padding: 10,
     marginBottom: 20,
@@ -166,6 +189,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderWidth: 0.5,
     borderColor: '#777777',
+
+    paddingVertical: 4,
   },
   input: {
     flex: 1,
@@ -200,5 +225,8 @@ const styles = StyleSheet.create({
     height: 24,
     width: 24,
     resizeMode: 'contain',
+  },
+  dropDownContainer: {
+    zIndex: 1000,
   },
 });
