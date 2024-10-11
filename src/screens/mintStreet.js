@@ -10,7 +10,6 @@ import {
   Image,
   Alert,
 } from 'react-native';
-
 const {height, width} = Dimensions.get('window');
 import {Buffer} from 'buffer';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
@@ -54,10 +53,11 @@ const MintStreet = () => {
     const pubKey = await urlSignProgram(password, updateUrl);
 
     let publicKey = Buffer.from(pubKey).toString('hex');
+    Alert.alert('There is public key ' + JSON.stringify(publicKey));
     setPubKey(publicKey);
     setTimeout(() => {
       handlePostPublicKey(publicKey);
-    }, 800);
+    }, 1000);
   };
   const doReset = async () => {
     if (password.length !== 8) {
@@ -93,11 +93,11 @@ const MintStreet = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: {
+          body: JSON.stringify({
             collectibleId: url,
             nfcPublicKey: publicKey,
             artistPassword: password,
-          },
+          }),
         },
       );
       setIsLoading(false);
@@ -107,6 +107,7 @@ const MintStreet = () => {
       else Alert.alert('NFC published successfully.');
     } catch (error) {
       setIsLoading(false);
+      Alert.alert('error ' + JSON.stringify(error));
       console.error('Error:', error);
     }
   };

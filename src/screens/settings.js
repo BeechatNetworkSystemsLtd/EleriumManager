@@ -36,15 +36,14 @@ const Settings = () => {
       <View style={styles.containerWrapper}>
         <View style={styles.contentContainer}>
           {/* <Image source={logoImage} style={styles.logo} /> */}
-          <Text style={styles.text}>Enter Server Password</Text>
+          <Text style={styles.text}>Enter Artist Password</Text>
           <View style={styles.divider} />
           <View style={styles.inputWrapper}>
             <TextInput
               style={styles.input}
               value={password}
               onChangeText={setPassword}
-              placeholder="Password (max. 8 characters)"
-              maxLength={8}
+              placeholder="Password"
               secureTextEntry={!showPassword}
               placeholderTextColor={'gray'}
             />
